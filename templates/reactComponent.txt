@@ -1,0 +1,9 @@
+import React from 'react'
+import './[compName].page.css'
+
+export default function [compName]() {
+    return (
+        <>   
+        </>
+    )
+}
