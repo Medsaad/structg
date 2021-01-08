@@ -1,30 +1,15 @@
 #!/usr/bin/env bash
 
+# gstruct generate atomic
+# /src
+#    /pages
+#    /components
+#         /atoms
+#         /molecules
+#         /organisms
+
 srcDir="${PWD}/src"
-
 subCommand=${1?"Run 'structg generate [page|atomic|atom|molecule|organism]' to start the app"}
-
-function createComponent() {
-    entity=$1
-    compName=$2
-    
-    innerPath=${srcDir}/pages
-    if [ $entity != 'page' ]; then
-        innerPath="${srcDir}/components/${entity}s"
-    fi
-
-    #creating files
-    mkdir "${innerPath}/${compName}"
-    touch ${innerPath}/${compName}/${compName}.page.{js,css}
-    
-    #populating component with default data
-    componentTemp=$(cat ${PWD}/templates/reactComponent.txt)
-    componentTemp=${componentTemp//"[compName]"/"$compName"}
-    echo "$componentTemp" >> ${innerPath}/${compName}/${compName}.page.js
-
-    echo ""
-    echo "${entity^} has been created"
-}
 
 if [ $subCommand != 'generate' ]; then
     echo "Error: Undefined command: $subCommand"
@@ -54,7 +39,7 @@ case $entity in
             read -p "Enter page name: " pageName
             pageName=${pageName^}
             
-            createComponent $entity $pageName
+            ./lib/create-component.sh $entity $pageName
         else
             echo "Run: 'structg generate atomic' first"
             exit 1
@@ -67,7 +52,7 @@ case $entity in
                 read -p "Enter $entity name: " compName
                 compName=${compName^}
             
-                createComponent $entity $compName
+                ./lib/create-component.sh $entity $compName
             else
                 echo "Run: 'structg generate atomic' first"
                 exit 1
