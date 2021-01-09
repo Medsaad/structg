@@ -22,24 +22,17 @@ case $entity in
     atomic)
         #checking if directories already created
         if ( ls $srcDir | grep -qe 'pages\|components' ); then
-            echo "Atomic pattern already established"
+            echo "Atomic pattern already established or some folders already exist!"
             exit 1
         else
             #make atomic directory structure 
-            mkdir "${srcDir}/pages"
-            mkdir "${srcDir}/components"
-            mkdir "${srcDir}/components/atoms"
-            mkdir "${srcDir}/components/molecules"
-            mkdir "${srcDir}/components/organisms"
+            mkdir ${srcDir}/{pages,components}
+            mkdir ${srcDir}/components/{atoms,molecules,organisms}
         fi
     ;;
     page)
         if ( ls $srcDir | grep -q pages ); then
-            #accept component name
-            read -p "Enter page name: " pageName
-            pageName=${pageName^}
-            
-            ./lib/create-component.sh $entity $pageName
+            ./lib/create-component.sh $entity
         else
             echo "Run: 'structg generate atomic' first"
             exit 1
@@ -47,12 +40,8 @@ case $entity in
     ;;
     atom | molecule | organism)
         if ( ls $srcDir | grep -q 'components' ); then
-            if ( ls ${srcDir}/components | grep -q 'atom\|organism\|molecules' ); then
-                #accept component name
-                read -p "Enter $entity name: " compName
-                compName=${compName^}
-            
-                ./lib/create-component.sh $entity $compName
+            if ( ls ${srcDir}/components | grep -q 'atom\|organism\|molecules' ); then        
+                ./lib/create-component.sh $entity
             else
                 echo "Run: 'structg generate atomic' first"
                 exit 1

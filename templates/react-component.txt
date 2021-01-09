@@ -1,5 +1,5 @@
 import React from 'react'
-import './[compName].page.css'
+import './[compName].component.css'
 
 export default function [compName]() {
     return (
